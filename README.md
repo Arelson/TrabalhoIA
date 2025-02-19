@@ -1,0 +1,2 @@
+# TrabalhoIA
+Aplicação do SVM 
