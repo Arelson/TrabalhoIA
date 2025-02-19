@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-from sklearn.decomposition import PCA
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
@@ -61,28 +59,3 @@ print("Desvio padrão na validação cruzada:", cv_scores.std())
 
 print("Número total de instâncias:", len(data))
 print("Número de instâncias após pré-processamento:", len(X_encoded))
-
-# Reduzir a dimensionalidade para 2D usando PCA (análise de componentes principais)
-pca = PCA(n_components=2)
-X_pca = pca.fit_transform(X_encoded)
-
-# Plotar o gráfico de dispersão
-plt.figure(figsize=(8, 6))
-
-# Plotar os pontos de cada classe
-plt.scatter(X_pca[y_encoded == 0, 0], X_pca[y_encoded == 0, 1], color="blue", label="Comestível", alpha=0.6)
-plt.scatter(X_pca[y_encoded == 1, 0], X_pca[y_encoded == 1, 1], color="red", label="Venenoso", alpha=0.6)
-
-# Plotar o hiperplano de decisão
-xx, yy = np.meshgrid(np.linspace(X_pca[:, 0].min(), X_pca[:, 0].max(), 500),
-                     np.linspace(X_pca[:, 1].min(), X_pca[:, 1].max(), 500))
-Z = svm_model.decision_function(np.c_[xx.ravel(), yy.ravel()])
-Z = Z.reshape(xx.shape)
-
-# Plotar as margens
-plt.contour(xx, yy, Z, levels=[-1, 0, 1], colors=["black", "orange", "black"], linestyles=["--", "-", "--"])
-plt.title("SVM com Margem e Hiperplano de Decisão")
-plt.xlabel("Componente 1")
-plt.ylabel("Componente 2")
-plt.legend()
-plt.show()
